@@ -40,6 +40,8 @@ namespace UserSearch.Api
 
             app.UseHttpsRedirection();
 
+            app.UseCors("AllowAngular");
+
             app.UseAuthorization();
 
 

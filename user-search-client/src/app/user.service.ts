@@ -13,6 +13,8 @@ export class UserService {
     { firstName: 'Jane', lastName: 'Doe', jobTitle: 'Sales Associate', email: 'jane@test.com', phone: '789' }
   ];
 
+  private baseUrl = 'http://localhost:5093/api/users';
+
   constructor(private http: HttpClient) {}
 
   searchUsers(term: string): Observable<any[]> {
@@ -35,7 +37,7 @@ export class UserService {
     // REAL API MODE
     // =========================
     return this.http.get<any[]>(
-      `/api/users/search?term=${term}`
+      `${this.baseUrl}/search?searchTerm=${term}`
     );
   }
 }
