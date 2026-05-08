@@ -68,6 +68,7 @@ Angular Frontend
 
 ## 📁 Project Structure
 
+```text
 UserSearchSolution/
 │
 ├── UserSearch.Api/
@@ -87,7 +88,7 @@ UserSearchSolution/
 │   │   └── environments/
 │
 └── README.md
-
+```
 ---
 
 ## 🚀 Backend Setup
