@@ -223,6 +223,7 @@ GET /api/users/{id}
 POST /api/users  
 
 Request:
+```json
 {
   "firstName": "Alex",
   "lastName": "Leo",
@@ -230,7 +231,7 @@ Request:
   "phone": "+447700900123",
   "jobTitle": "Software Engineer"
 }
-
+```
 ---
 
 ## 🔁 Database Reset (Full Dev Reset)
