@@ -1,0 +1,39 @@
+<div class="search-wrapper">
+  <!-- SEARCH INPUT -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Search users..."
+      [value]="searchTerm"
+      (input)="onSearch($event)"
+    />
+
+    <button (click)="onSearchClick()">Go!</button>
+  </div>
+
+  <!-- SUGGESTIONS -->
+  <ul *ngIf="users.length > 0" class="suggestions">
+    <li *ngFor="let user of users" (click)="selectUser(user)">
+        <span>
+            <ng-container *ngFor="let part of getHighlightMatchingParts(user.firstName + ' ' + user.lastName)">
+                <span [class.highlight]="part.match">{{ part.text }}</span>
+            </ng-container>
+        </span>
+    </li>
+  </ul>
+
+  <!-- SELECTED USERS DETAILS -->
+    <div class="selected-users" *ngIf="selectedUsers.length > 0">
+        <div class="user-grid">
+            <div class="user-card" *ngFor="let user of selectedUsers">
+                <div class="card-content">
+                    <p><strong>{{ user.firstName }} {{ user.lastName }}</strong></p>
+                    <p>{{ user.jobTitle }}</p>
+                    <p>{{ user.phone }}</p>
+                    <p>{{ user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

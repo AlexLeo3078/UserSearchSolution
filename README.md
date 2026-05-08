@@ -1,99 +1,227 @@
 # UserSearchSolution
 
-A .NET 8 ASP.NET Core Web API for user search and management using Entity Framework Core and SQL Server.
+A full-stack user search application built with:
+
+- ASP.NET Core Web API (.NET 8)
+- Entity Framework Core + SQL Server
+- Angular frontend (user-search-client)
+- Mock + Real API switching support
 
 ---
 
 ## 📌 Index
 
-- [Features](#features)
-- [Technologies](#technologies)
-- [Project Structure](#project-structure)
-- [API Endpoints](#api-endpoints)
-- [Reset Database](#reset-database-full-dev-reset)
-- [Getting Started](#getting-started)
+- Features
+- Technologies
+- Architecture
+- Project Structure
+- Backend Setup
+- Frontend Setup
+- Mock vs Real API (Important)
+- API Endpoints
+- Database Reset (Full Dev Reset)
+- Running the Full Stack
+- Notes
+- Future Improvements
 
 ---
 
 ## ✨ Features
 
-- 🔍 Search users by first or last name (case-insensitive)
-- 👤 Retrieve user by ID
-- ➕ Create new users
-- ❌ Email uniqueness validation
-- 🗄️ SQL Server database using Entity Framework Core
-- 🔁 Automated database reset script for development
+- Search users by first or last name (case-insensitive)
+- Retrieve user by ID
+- Create new users
+- Email uniqueness validation
+- SQL Server database with Entity Framework Core
+- Angular frontend with live search UI
+- Mock mode (JSON / in-memory data)
+- Real API mode (ASP.NET Core backend)
+- Full database reset script for development
 
 ---
 
 ## 🛠️ Technologies
 
+### Backend
 - .NET 8
 - ASP.NET Core Web API
 - Entity Framework Core 8
 - SQL Server (LocalDB)
-- C#
+
+### Frontend
+- Angular (standalone setup)
+- TypeScript
+- SCSS
+- RxJS
+
+---
+
+## 🧠 Architecture
+
+Angular Frontend  
+→ UserService (Mock or API switch)  
+→ ASP.NET Core Web API  
+→ Entity Framework Core  
+→ SQL Server Database  
 
 ---
 
 ## 📁 Project Structure
 
-
-
-```text
 UserSearchSolution/
 │
 ├── UserSearch.Api/
-│
 │   ├── Controllers/
-│   │   └── UsersController.cs
-│   │
 │   ├── Models/
-│   │   └── User.cs
-│   │
 │   ├── Data/
-│   │   └── AppDbContext.cs
-│   │
 │   ├── Migrations/
-│   │   └── (EF Core migrations)
-│   │
 │   ├── Build/
 │   │   └── reset-db.ps1
-│   │
 │   ├── appsettings.json
 │   ├── Program.cs
-│   └── UserSearch.Api.csproj
+│
+├── user-search-client/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── assets/
+│   │   └── environments/
 │
 └── README.md
-```
-
 
 ---
 
-## 🚀 API Endpoints
+## 🚀 Backend Setup
 
-### 🔍 Search Users
-**GET** `/api/users/search?term=alex`
+cd UserSearch.Api  
+dotnet run  
 
-Search users by first or last name.
-
----
-
-### 👤 Get User by ID
-**GET** `/api/users/{id}`
-
-Returns a single user by ID.
+Backend runs at:
+https://localhost:5093  
 
 ---
 
-### ➕ Create User
-**POST** `/api/users`
+## 🌐 Frontend Setup
 
-Creates a new user.
+cd user-search-client  
+npm install  
+ng serve  
 
-#### Request Body:
+Frontend runs at:
+http://localhost:4200  
 
-```json
+---
+
+## ⚙️ Mock vs Real API (IMPORTANT)
+
+This project supports **two ways of getting data**:
+
+---
+
+### 🟡 Mock Mode (Frontend-only)
+
+Mock mode uses **local or in-memory data inside the Angular app**.
+
+✔ No backend required  
+✔ Fast development  
+✔ Useful for UI work  
+✔ No network calls  
+
+Example:
+
+useMockApi: true  
+
+Data is:
+- hardcoded in service OR
+- loaded from JSON file in assets/
+
+---
+
+### 🔵 Real API Mode (Backend + Database)
+
+Real API mode connects Angular to the ASP.NET Core backend.
+
+✔ Uses SQL Server database  
+✔ Full end-to-end flow  
+✔ Simulates production behaviour  
+✔ Uses HTTP calls  
+
+Example:
+
+useMockApi: false  
+
+Example API call:
+https://localhost:5093/api/users/search?term=alex  
+
+---
+
+## 🔄 How to Switch Between Modes
+
+You control the mode in:
+
+src/environments/environment.ts  
+
+### Mock mode
+useMockApi: true  
+
+### API mode
+useMockApi: false  
+
+👉 No code changes needed in components  
+👉 Only environment flag changes behaviour  
+
+---
+
+## 🚀 How to Run Both Modes
+
+### 🟡 Run Mock Mode (Frontend only)
+
+1. Open Angular project
+2. Ensure:
+
+useMockApi: true  
+
+3. Run:
+
+cd user-search-client  
+ng serve  
+
+✔ App works without backend
+
+---
+
+### 🔵 Run Real API Mode (Full Stack)
+
+1. Start backend:
+
+cd UserSearch.Api  
+dotnet run  
+
+2. Start frontend:
+
+cd user-search-client  
+ng serve  
+
+3. Set:
+
+useMockApi: false  
+
+✔ Angular calls .NET API  
+✔ Data comes from SQL Server  
+
+---
+
+## 🔌 API Endpoints
+
+### Search Users
+GET /api/users/search?term=alex  
+
+### Get User by ID
+GET /api/users/{id}  
+
+### Create User
+POST /api/users  
+
+Request:
 {
   "firstName": "Alex",
   "lastName": "Leo",
@@ -101,38 +229,56 @@ Creates a new user.
   "phone": "+447700900123",
   "jobTitle": "Software Engineer"
 }
-```
-
-## 🔁 Reset Database (FULL DEV RESET)
-
-This project includes a PowerShell script that completely resets the database and Entity Framework migrations.
-
-It is useful for:
-- Starting from a clean state
-- Rebuilding schema after model changes
-- Avoiding migration conflicts during development
 
 ---
 
-### 📍 Script Location
+## 🔁 Database Reset (Full Dev Reset)
 
+Location:
+UserSearch.Api/Build/reset-db.ps1  
 
-UserSearch.Api/Build/reset-db.ps1
+Run:
 
+cd UserSearch.Api/Build  
+.\reset-db.ps1  
+
+What it does:
+- Drops database
+- Deletes migrations
+- Recreates schema
 
 ---
 
-### ▶️ How to Run
+## 🚀 Running Full Stack (Summary)
 
-1. Open **PowerShell**
-2. Navigate to the script folder:
-```powershell
-cd UserSearch.Api/Build
-Run the script:
-.\reset-db.ps1
-```
-3. The script will:
-   - Drop the existing database
-   - Delete all migration files
-   - Create a new migration
-   - Update the database with the new schema
+### Backend
+cd UserSearch.Api  
+dotnet run  
+
+### Frontend
+cd user-search-client  
+npm install  
+ng serve  
+
+Open:
+http://localhost:4200  
+
+---
+
+## 🧠 Notes
+
+- Frontend: http://localhost:4200  
+- Backend: https://localhost:5093  
+- Ensure CORS is enabled in API  
+- Mock mode works without backend  
+- API mode requires backend running  
+
+---
+
+## 📌 Future Improvements
+
+- Debounced search
+- Pagination
+- JWT authentication
+- Docker support
+- CI/CD pipeline
