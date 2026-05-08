@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../user.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +15,7 @@ export class SearchComponent {
   // =====================
   // STATE
   // =====================
-  users: any[] = [];              // suggestions dropdown
+  users$ = new BehaviorSubject<any[]>([]);
   selectedUser: any = null;      // currently selected user
   selectedUsers: any[] = [];     // final selected list
   searchTerm: string = '';       // input value
@@ -30,14 +31,14 @@ export class SearchComponent {
 
     const term = value.toLowerCase();
 
-    if (value.length < 2) {
-      this.users = [];
+    if (!value || value.length < 2) {
+      this.users$.next([]);
       return;
     }
 
     this.userService.searchUsers(value)
       .subscribe(data => {
-                this.users = data;
+      this.users$.next(data);
       });
   }
 
@@ -51,7 +52,7 @@ export class SearchComponent {
     this.searchTerm = `${user.firstName} ${user.lastName}`;
 
     // hide dropdown
-    this.users = [];
+    this.users$.next([]);
   }
 
   // =====================
@@ -72,7 +73,7 @@ export class SearchComponent {
     // reset selection state
     this.selectedUser = null;
     this.searchTerm = '';
-    this.users = [];
+    this.users$.next([]);
   }
 
   // =====================
