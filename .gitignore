@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# EF Core
+Migrations/*Designer.cs
+
+# Angular
+node_modules/
+dist/
+.angular/
+
+# Logs
+*.log
