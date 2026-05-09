@@ -20,6 +20,7 @@ A full-stack user search application built with:
 - Mock vs Real API (Important)
 - API Endpoints
 - Database Reset (Full Dev Reset)
+- Seed Database
 - Running the Full Stack
 - Notes
 - Future Improvements
@@ -36,7 +37,7 @@ A full-stack user search application built with:
 - Angular frontend with live search UI
 - Mock mode (JSON / in-memory data)
 - Real API mode (ASP.NET Core backend)
-- Full database reset script for development
+- Full database reset and build script for development
 
 ---
 
@@ -75,16 +76,16 @@ UserSearchSolution/
 │   ├── Controllers/
 │   ├── Models/
 │   ├── Data/
+|   ├── Dto/
 │   ├── Migrations/
 │   ├── Build/
-│   │   └── reset-db.ps1
+│   │   └── reset-and-build-db.ps1
 │   ├── appsettings.json
 │   ├── Program.cs
 │
 ├── user-search-client/
 │   ├── src/
 │   │   ├── app/
-│   │   ├── assets/
 │   │   └── environments/
 │
 └── README.md
@@ -213,8 +214,8 @@ useMockApi: false
 
 ## 🔌 API Endpoints
 
-### Search Users
-GET /api/users/search?term=alex  
+### Get suggestions
+GET /api/users/get-suggestion?searchTerm=alex  
 
 ### Get User by ID
 GET /api/users/{id}  
@@ -234,20 +235,62 @@ Request:
 ```
 ---
 
-## 🔁 Database Reset (Full Dev Reset)
+## 🔁 Database Reset and Build (Full Dev Reset and Build)
 
 Location:
-UserSearch.Api/Build/reset-db.ps1  
+UserSearch.Api/Build/reset-and-build-db.ps1  
 
 Run:
 
 cd UserSearch.Api/Build  
-.\reset-db.ps1  
+.\reset-and-build-db.ps1  
 
 What it does:
 - Drops database
 - Deletes migrations
 - Recreates schema
+
+---
+## 🌱 Seed Database (Excel Import)
+
+This endpoint allows you to populate the database using an Excel (.xlsx) file.  
+It is intended for **local development and testing only**.
+
+---
+
+### 📌 Endpoint
+
+**POST**
+
+/api/UserImport/seed
+
+
+---
+
+### 📂 Request Format
+
+- Content-Type: `multipart/form-data`
+- Field name: `file`
+
+---
+
+### 📥 Example Request
+
+```http
+POST http://localhost:5093/api/UserImport/seed
+Content-Type: multipart/form-data
+
+Body:
+
+file: users.xlsx
+📊 Excel File Structure
+
+The Excel file must contain the following columns:
+
+| FirstName | LastName | JobTitle                              | Phone         | Email                                 |
+| --------- | -------- | ------------------------------------- | ------------- | ------------------------------------- |
+| Alex      | Leo      | Software Developer                    | +447700900123 | [alex@test.com](mailto:alex@test.com) |
+| John      | Smith    | Developer                             | +447700900456 | [john@test.com](mailto:john@test.com) |
 
 ---
 
@@ -278,9 +321,7 @@ http://localhost:4200
 ---
 
 ## 📌 Future Improvements
-
-- Debounced search
-- Pagination
+- Caching
 - JWT authentication
 - Docker support
 - CI/CD pipeline
