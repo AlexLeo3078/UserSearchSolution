@@ -98,9 +98,9 @@ cd UserSearch.Api
 dotnet run  
 
 Backend runs at:
-https://localhost:5093
+http://localhost:5093
 
-Swagger UI: https://localhost:5093/swagger
+Swagger UI: http://localhost:5093/swagger
 
 ---
 
@@ -154,7 +154,7 @@ Example:
 useMockApi: false  
 
 Example API call:
-https://localhost:5093/api/users/get-suggestion?searchTerm=alex  
+http://localhost:5093/api/users/get-suggestion?searchTerm=alex  
 
 ---
 
@@ -317,7 +317,7 @@ http://localhost:4200
 ## 🧠 Notes
 
 - Frontend: http://localhost:4200  
-- Backend: https://localhost:5093  
+- Backend: http://localhost:5093  
 - Ensure CORS is enabled in API  
 - Mock mode works without backend  
 - API mode requires backend running  
