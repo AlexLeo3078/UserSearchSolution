@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserSearch.Api.Data;
+using UserSearch.Api.Dto;
 using UserSearch.Api.Models;
 
 namespace UserSearch.Api.Controllers
@@ -17,9 +19,9 @@ namespace UserSearch.Api.Controllers
             _context = appDbContext;
         }
 
-        // Search Users by first or last name
-        [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string searchTerm)
+        // Get user suggestions
+        [HttpGet("get-suggestions")]
+        public async Task<IActionResult> GetSuggestions([FromQuery] string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -34,7 +36,15 @@ namespace UserSearch.Api.Controllers
                     user.LastName.ToLower().Contains(standardizedSearchTerm))
                 .ToListAsync();
 
-            return Ok(users);
+            List<SuggestionResponse> suggestionsResponse = users
+                .Select(x => new SuggestionResponse
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName
+                }).ToList();
+
+            return Ok(suggestionsResponse);
         }
 
         // Get user by ID
@@ -43,7 +53,21 @@ namespace UserSearch.Api.Controllers
         {
             User? user = await _context.Users.FindAsync(id);
 
-            return user != null ? Ok(user) : NotFound();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            Response result = new Response
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                JobTitle = user.JobTitle,
+                Email = user.Email,
+                Phone = user.Phone
+            };
+
+            return Ok(result);
         }
 
         // Add new user
@@ -67,7 +91,16 @@ namespace UserSearch.Api.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(user);
+            Response result = new Response
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                JobTitle = user.JobTitle,
+                Email = user.Email,
+                Phone = user.Phone
+            };
+
+            return Ok(result);
         }
     }
 }

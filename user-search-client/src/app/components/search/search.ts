@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
 import { UserSelectionService } from '../../services/user-selection.service';
+import { User, UserSelection } from '../../interfaces/user';
 
 @Component({
   selector: 'app-search',
@@ -12,18 +13,16 @@ import { UserSelectionService } from '../../services/user-selection.service';
   styleUrl: './search.scss',
 })
 export class SearchComponent implements OnInit {
-  
-  public usersSubject$ = new BehaviorSubject<any[]>([]);
+
+  public usersSubject$ = new BehaviorSubject<UserSelection[]>([]);
   private searchSubject = new Subject<string>();
-  
-  public currentSelectedUser: any = null;
-  public listOfSelectedUsers: any[] = [];
+  public currentSelectedUser: UserSelection | null = null;
+  public listOfSelectedUsers: User[] = [];
   public searchTerm: string = '';
 
   constructor(
-    private userService: UserService, 
-    private userSelectionService: UserSelectionService ) 
-    {}
+    private userService: UserService,
+    private userSelectionService: UserSelectionService) { }
 
   /**
    * Initializes the component by setting up a subscription to the searchSubject. 
@@ -35,7 +34,7 @@ export class SearchComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged(), // only trigger search if term has changed. Might be useful.
       filter(query => query.length >= 2),
-      switchMap(value => this.userService.searchUsers(value))
+      switchMap(value => this.userService.getSuggestions(value))
     ).subscribe(data => {
       this.usersSubject$.next(data);
     });
@@ -50,8 +49,7 @@ export class SearchComponent implements OnInit {
    * Otherwise, it updates the search term and emits it to the searchSubject, which triggers the search logic in ngOnInit.
    */
   onSearch(value: string) {
-
-    if(value.length < 2) {
+    if (value.length < 2) {
       this.usersSubject$.next([]);
       return;
     }
@@ -65,7 +63,7 @@ export class SearchComponent implements OnInit {
    * Handles the selection of a user from the suggestions dropdown. 
    * It sets the selectedUser state, updates the search input to show the selected user's name, and clears the suggestions.
    */
-  selectUser(user: any) {
+  selectUser(user: UserSelection) {
     this.currentSelectedUser = user;
 
     // fill input with selected name
@@ -82,20 +80,23 @@ export class SearchComponent implements OnInit {
   onSearchClick() {
     if (!this.currentSelectedUser) return;
 
-    // prevent duplicates
-    const exists = this.listOfSelectedUsers.some(
-      user => user.email === this.currentSelectedUser.email
-    );
+    this.userService.getUserById(this.currentSelectedUser.id)
+      .subscribe(result => {
+        // prevent duplicates
+        const exists = this.listOfSelectedUsers.some(
+          user => user.email === result.email
+        );
 
-    if (!exists) {
-      this.listOfSelectedUsers.push(this.currentSelectedUser);
-      this.userSelectionService.setSelectedUsers(this.listOfSelectedUsers);
-    }
+        if (!exists) {
+          this.listOfSelectedUsers.push(result);
+          this.userSelectionService.setSelectedUsers(this.listOfSelectedUsers);
+        }
 
-    // clean up state
-    this.currentSelectedUser = null;
-    this.searchTerm = '';
-    this.usersSubject$.next([]);
+        // clean up state
+        this.currentSelectedUser = null;
+        this.searchTerm = '';
+        this.usersSubject$.next([]);
+      });
   }
 
 
@@ -107,10 +108,10 @@ export class SearchComponent implements OnInit {
   getHighlightMatchingParts(text: string) {
     const normalizedSearchTerm = (this.searchTerm || '').trim().toLowerCase();
 
-    if (!normalizedSearchTerm){ 
-      return [{ 
-        text, 
-        match: false 
+    if (!normalizedSearchTerm) {
+      return [{
+        text,
+        match: false
       }];
     }
 
@@ -118,10 +119,10 @@ export class SearchComponent implements OnInit {
     const index = text.toLowerCase().indexOf(normalizedSearchTerm);
 
     // if no match, return whole text as non-matching
-    if (index === -1){ 
-      return [{ 
-        text, 
-        match: false 
+    if (index === -1) {
+      return [{
+        text,
+        match: false
       }];
     }
 
