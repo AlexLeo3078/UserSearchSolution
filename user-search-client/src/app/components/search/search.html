@@ -1,4 +1,4 @@
-<ng-container *ngIf="users$ | async as users">
+<ng-container *ngIf="usersSubject$ | async as users">
     <div class="search-wrapper">
     <!-- SEARCH INPUT -->
     <div class="search-bar">
@@ -24,9 +24,9 @@
     </ul>
 
     <!-- SELECTED USERS DETAILS -->
-        <div class="selected-users" *ngIf="selectedUsers.length > 0">
+        <div class="selected-users" *ngIf="ListOfSelectedUsers.length > 0">
             <div class="user-grid">
-                <div class="user-card" *ngFor="let user of selectedUsers">
+                <div class="user-card" *ngFor="let user of ListOfSelectedUsers">
                     <div class="card-content">
                         <p><strong>{{ user.firstName }} {{ user.lastName }}</strong></p>
                         <p>{{ user.jobTitle }}</p>

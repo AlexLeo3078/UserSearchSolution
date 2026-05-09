@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../user.service';
-import { BehaviorSubject } from 'rxjs';
+import { UserService } from '../../services/user.service';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -10,75 +10,92 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './search.html',
   styleUrl: './search.scss',
 })
-export class SearchComponent {
-
-  // =====================
-  // STATE
-  // =====================
-  users$ = new BehaviorSubject<any[]>([]);
-  selectedUser: any = null;      // currently selected user
-  selectedUsers: any[] = [];     // final selected list
-  searchTerm: string = '';       // input value
+export class SearchComponent implements OnInit {
+  
+  public usersSubject$ = new BehaviorSubject<any[]>([]);
+  private searchSubject = new Subject<string>();
+  
+  public currentSelectedUser: any = null;
+  public ListOfSelectedUsers: any[] = [];
+  public searchTerm: string = '';
 
   constructor(private userService: UserService) {}
 
-  // =====================
-  // SEARCH (typing)
-  // =====================
-  onSearch(event: any) {
-    const value = event.target.value;
-    this.searchTerm = value;
+  /**
+   * Initializes the component by setting up a subscription to the searchSubject. 
+   * It applies several RxJS operators to handle debouncing, filtering, and switching to the latest search term.
+   * When new data is received from the userService, it updates the usersSubject$ BehaviorSubject, which in turn updates the suggestions dropdown.
+   */
+  ngOnInit() {
+    this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(), // only trigger search if term has changed. Might be useful.
+      filter(query => query.length >= 2),
+      switchMap(value => this.userService.searchUsers(value))
+    ).subscribe(data => {
+      this.usersSubject$.next(data);
+    });
+  }
 
-    const term = value.toLowerCase();
 
-    if (!value || value.length < 2) {
-      this.users$.next([]);
+  /**
+   * Handles the input event from the search field. If the input value is less than 2 characters, it clears the suggestions.
+   * Otherwise, it updates the search term and emits it to the searchSubject, which triggers the search logic in ngOnInit.
+   */
+  onSearch(value: string) {
+
+    if(value.length < 2) {
+      this.usersSubject$.next([]);
       return;
     }
 
-    this.userService.searchUsers(value)
-      .subscribe(data => {
-      this.users$.next(data);
-      });
+    this.searchTerm = value;
+    this.searchSubject.next(value);
   }
 
-  // =====================
-  // SELECT FROM SUGGESTIONS
-  // =====================
+
+  /**
+   * Handles the selection of a user from the suggestions dropdown. 
+   * It sets the selectedUser state, updates the search input to show the selected user's name, and clears the suggestions.
+   */
   selectUser(user: any) {
-    this.selectedUser = user;
+    this.currentSelectedUser = user;
 
     // fill input with selected name
     this.searchTerm = `${user.firstName} ${user.lastName}`;
 
     // hide dropdown
-    this.users$.next([]);
+    this.usersSubject$.next([]);
   }
 
-  // =====================
-  // GO BUTTON CLICK
-  // =====================
+  /**
+   * Adds the currently selected user to the list of selected users, if it's not already there.
+   * Then resets the selection state and clears the search input and suggestions.
+   */
   onSearchClick() {
-    if (!this.selectedUser) return;
+    if (!this.currentSelectedUser) return;
 
     // prevent duplicates
-    const exists = this.selectedUsers.some(
-      u => u.email === this.selectedUser.email
+    const exists = this.ListOfSelectedUsers.some(
+      user => user.email === this.currentSelectedUser.email
     );
 
     if (!exists) {
-      this.selectedUsers.push(this.selectedUser);
+      this.ListOfSelectedUsers.push(this.currentSelectedUser);
     }
 
-    // reset selection state
-    this.selectedUser = null;
+    // clean up state
+    this.currentSelectedUser = null;
     this.searchTerm = '';
-    this.users$.next([]);
+    this.usersSubject$.next([]);
   }
 
-  // =====================
-  // HIGHLIGHT MATCHING TEXT
-  // =====================
+
+  /**
+   * Splits the given text into parts that match the current search term and parts that don't.
+   * This is used to highlight the matching portion of the user name in the suggestions dropdown.
+   * Returns an array of objects with 'text' and 'match' properties, where 'match' is true for the part that matches the search term.
+   */
   getHighlightMatchingParts(text: string) {
     const normalizedSearchTerm = (this.searchTerm || '').trim().toLowerCase();
 
