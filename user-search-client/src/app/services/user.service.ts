@@ -46,4 +46,16 @@ private mockData = [
       `${this.baseUrl}/search?searchTerm=${term}`
     );
   }
+
+  addUser(user: any): Observable<any>{
+    if (environment.useMockApi) {
+      this.mockData.push(user);
+      return user;
+    }
+
+    return this.http.post<any>(
+      `${this.baseUrl}`,
+      user
+    );
+  }
 }

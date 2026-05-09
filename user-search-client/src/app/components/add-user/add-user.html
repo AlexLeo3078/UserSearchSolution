@@ -1,0 +1,84 @@
+<div class="form-wrapper">
+    <div *ngIf="isFormVisible" class="form-card">
+        <form [formGroup]="userForm" (ngSubmit)="submit()" class="form">
+
+            <!-- ROW 1 -->
+            <div class="row">
+                <div class="field">
+                    <input formControlName="firstName" placeholder="First Name" />
+                    <div class="error" *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName')?.invalid">
+                        <span *ngIf="userForm.get('firstName')?.errors?.['required']">
+                            First name is required
+                        </span>
+                        <span *ngIf="userForm.get('firstName')?.errors?.['minlength']">
+                            Must be at least 2 characters
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <input formControlName="lastName" placeholder="Last Name" />
+                    <div class="error" *ngIf="userForm.get('lastName')?.touched && userForm.get('lastName')?.invalid">
+                        <span *ngIf="userForm.get('lastName')?.errors?.['required']">
+                            Last name is required
+                        </span>
+                        <span *ngIf="userForm.get('lastName')?.errors?.['minlength']">
+                            Must be at least 2 characters
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 2 -->
+            <div class="row">
+                <div class="field">
+                    <input formControlName="jobTitle" placeholder="Job Title" />
+                </div>
+
+                <div class="field">
+                    <input formControlName="email" placeholder="Email" />
+                    <div class="error" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">
+                        <span *ngIf="userForm.get('email')?.errors?.['required']">
+                            Email is required
+                        </span>
+
+                        <span *ngIf="userForm.get('email')?.errors?.['email']">
+                            Enter a valid email address
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <input formControlName="phone" placeholder="Phone" />
+                    <div class="error" *ngIf="userForm.get('phone')?.touched && userForm.get('phone')?.invalid">
+
+                        <span *ngIf="userForm.get('phone')?.errors?.['required']">
+                            Phone number is required
+                        </span>
+
+                        <span *ngIf="userForm.get('phone')?.errors?.['pattern']">
+                            Enter a valid UK phone number
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit" [disabled]="loading || userForm.invalid">
+                    {{ loading ? 'Creating...' : 'Create User' }}
+                </button>
+
+                <button type="button" (click)="cancel()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <button class="create-user" (click)="toggleForm()">
+        New User +
+    </button>
+
+</div>

@@ -48,7 +48,7 @@ namespace UserSearch.Api.Controllers
 
         // Add new user
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create([FromBody] User user)
         {
             // Check if user with the same email already exists
             var exists = await _context.Users
