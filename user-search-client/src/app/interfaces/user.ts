@@ -7,7 +7,7 @@ export interface UserSelection {
 export interface User{
   firstName: string;
   lastName: string;
-  jobTitle:string;
+  jobTitle?:string;
   email:string;
   phone:string;
 }

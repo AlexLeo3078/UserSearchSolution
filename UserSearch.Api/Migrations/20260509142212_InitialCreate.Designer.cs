@@ -11,7 +11,7 @@ using UserSearch.Api.Data;
 namespace UserSearch.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260509062319_InitialCreate")]
+    [Migration("20260509142212_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

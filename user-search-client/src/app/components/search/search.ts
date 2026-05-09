@@ -32,7 +32,6 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.searchSubject.pipe(
       debounceTime(500),
-      distinctUntilChanged(), // only trigger search if term has changed. Might be useful.
       filter(query => query.length >= 2),
       switchMap(value => this.userService.getSuggestions(value))
     ).subscribe(data => {

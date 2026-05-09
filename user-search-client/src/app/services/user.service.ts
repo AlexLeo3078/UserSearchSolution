@@ -88,11 +88,14 @@ export class UserService {
    */
   addUser(user: User): Observable<User> {
     if (environment.useMockApi) {
-
       const id = this.mockData.length + 1;
       this.mockData.push({
-        ...user,
-        id
+        id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        jobTitle: user.jobTitle || '',
+        email: user.email,
+        phone: user.phone
       });
       return of(user);
     }
