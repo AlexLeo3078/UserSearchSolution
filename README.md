@@ -154,7 +154,7 @@ Example:
 useMockApi: false  
 
 Example API call:
-http://localhost:5093/api/users/get-suggestion?searchTerm=alex  
+http://localhost:5093/api/users/get-suggestions?searchTerm=alex  
 
 ---
 
@@ -217,7 +217,7 @@ useMockApi: false
 ## 🔌 API Endpoints
 
 ### Get suggestions
-GET /api/users/get-suggestion?searchTerm=alex  
+GET /api/users/get-suggestions?searchTerm=alex  
 
 ### Get User by ID
 GET /api/users/{id}  
