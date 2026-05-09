@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
+import { UserSelectionService } from '../../services/user-selection.service';
 
 @Component({
   selector: 'app-search',
@@ -16,10 +17,13 @@ export class SearchComponent implements OnInit {
   private searchSubject = new Subject<string>();
   
   public currentSelectedUser: any = null;
-  public ListOfSelectedUsers: any[] = [];
+  public listOfSelectedUsers: any[] = [];
   public searchTerm: string = '';
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService, 
+    private userSelectionService: UserSelectionService ) 
+    {}
 
   /**
    * Initializes the component by setting up a subscription to the searchSubject. 
@@ -35,6 +39,9 @@ export class SearchComponent implements OnInit {
     ).subscribe(data => {
       this.usersSubject$.next(data);
     });
+
+    // populate 
+    this.listOfSelectedUsers = [...this.userSelectionService.getSelectedUsers()];
   }
 
 
@@ -76,12 +83,13 @@ export class SearchComponent implements OnInit {
     if (!this.currentSelectedUser) return;
 
     // prevent duplicates
-    const exists = this.ListOfSelectedUsers.some(
+    const exists = this.listOfSelectedUsers.some(
       user => user.email === this.currentSelectedUser.email
     );
 
     if (!exists) {
-      this.ListOfSelectedUsers.push(this.currentSelectedUser);
+      this.listOfSelectedUsers.push(this.currentSelectedUser);
+      this.userSelectionService.setSelectedUsers(this.listOfSelectedUsers);
     }
 
     // clean up state

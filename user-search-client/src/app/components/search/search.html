@@ -24,9 +24,9 @@
     </ul>
 
     <!-- SELECTED USERS DETAILS -->
-        <div class="selected-users" *ngIf="ListOfSelectedUsers.length > 0">
+        <div class="selected-users" *ngIf="listOfSelectedUsers.length > 0">
             <div class="user-grid">
-                <div class="user-card" *ngFor="let user of ListOfSelectedUsers">
+                <div class="user-card" *ngFor="let user of listOfSelectedUsers">
                     <div class="card-content">
                         <p><strong>{{ user.firstName }} {{ user.lastName }}</strong></p>
                         <p>{{ user.jobTitle }}</p>
