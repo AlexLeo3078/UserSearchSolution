@@ -283,6 +283,8 @@ Content-Type: multipart/form-data
 Body:
 
 file: users.xlsx
+```
+
 📊 Excel File Structure
 
 The Excel file must contain the following columns:
