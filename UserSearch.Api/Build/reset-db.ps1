@@ -15,6 +15,9 @@ if (Test-Path ".\Migrations") {
 Write-Host "🆕 Creating fresh migration..." -ForegroundColor Green
 dotnet ef migrations add InitialCreate
 
+Write-Host " 📨 Adding email constraint..." -ForegroundColor Green
+dotnet ef migrations add AddUniqueEmailConstraint
+
 Write-Host "🆙 Updating database..." -ForegroundColor Cyan
 dotnet ef database update
 

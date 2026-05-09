@@ -6,7 +6,7 @@
         type="text"
         placeholder="Search users..."
         [value]="searchTerm"
-        (input)="onSearch($event)"
+        (input)="onSearch($event.target.value)" 
         />
 
         <button (click)="onSearchClick()">Go!</button>

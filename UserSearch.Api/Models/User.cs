@@ -22,6 +22,5 @@ namespace UserSearch.Api.Models
         [Required]
         [Phone]
         public string Phone { get; set; } = string.Empty;
-
     }
 }
