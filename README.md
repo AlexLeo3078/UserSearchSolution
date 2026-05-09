@@ -98,7 +98,9 @@ cd UserSearch.Api
 dotnet run  
 
 Backend runs at:
-https://localhost:5093  
+https://localhost:5093
+
+Swagger UI: https://localhost:5093/swagger
 
 ---
 
