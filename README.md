@@ -152,7 +152,7 @@ Example:
 useMockApi: false  
 
 Example API call:
-https://localhost:5093/api/users/search?term=alex  
+https://localhost:5093/api/users/get-suggestion?searchTerm=alex  
 
 ---
 
