@@ -11,8 +11,8 @@ using UserSearch.Api.Data;
 namespace UserSearch.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260509142217_AddUniqueEmailConstraint")]
-    partial class AddUniqueEmailConstraint
+    [Migration("20260509164043_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,6 @@ namespace UserSearch.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JobTitle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")

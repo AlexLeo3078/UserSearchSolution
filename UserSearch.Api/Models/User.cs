@@ -13,7 +13,7 @@ namespace UserSearch.Api.Models
            
         public string LastName { get; set; } = string.Empty;
 
-        public string JobTitle { get; set; } = string.Empty;
+        public string? JobTitle { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]

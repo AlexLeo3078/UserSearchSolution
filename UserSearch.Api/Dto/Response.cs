@@ -8,7 +8,7 @@ namespace UserSearch.Api.Dto
 
         public string LastName { get; set; } = string.Empty;
 
-        public string JobTitle { get; set; } = string.Empty;
+        public string? JobTitle { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]

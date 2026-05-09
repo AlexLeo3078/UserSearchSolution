@@ -73,10 +73,17 @@ export class AddUserComponent {
       )
       .subscribe({
         next: (res) => {
-          this.toast.show('User created successfully ✔', 'success');
-          this.success = true;
-          this.userForm.reset();
-          this.isFormVisible = false;
+          if (res != null) {
+            this.toast.show('User created successfully ✔', 'success');
+            this.success = true;
+            this.userForm.reset();
+            this.isFormVisible = false;
+          } else {
+            this.toast.show(
+              'Failed to create user',
+              'error'
+            );
+          }
         },
         error: (err) => {
           this.toast.show(

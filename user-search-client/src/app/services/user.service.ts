@@ -88,6 +88,16 @@ export class UserService {
    */
   addUser(user: User): Observable<User> {
     if (environment.useMockApi) {
+
+      const exists = this.mockData.some(item =>
+        item.email == user.email
+      );
+
+      if(exists)
+      {
+        return of(null as any); 
+      }
+
       const id = this.mockData.length + 1;
       this.mockData.push({
         id,

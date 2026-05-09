@@ -62,7 +62,7 @@ namespace UserSearch.Api.Controllers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                JobTitle = user.JobTitle,
+                JobTitle = user.JobTitle ?? string.Empty,
                 Email = user.Email,
                 Phone = user.Phone
             };
@@ -95,7 +95,7 @@ namespace UserSearch.Api.Controllers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                JobTitle = user.JobTitle,
+                JobTitle = user.JobTitle ?? string.Empty,
                 Email = user.Email,
                 Phone = user.Phone
             };
