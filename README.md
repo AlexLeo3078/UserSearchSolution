@@ -8,7 +8,7 @@ A full-stack user search application built with:
 
 ---
 
-## 📌 Index
+## Index
 
 - [Features](#features)
 - [Technologies](#technologies)
@@ -25,7 +25,7 @@ A full-stack user search application built with:
 
 ---
 
-## ✨ Features
+## Features
 
 - Search users by first or last name (case-insensitive)
 - Retrieve user by ID
@@ -37,7 +37,7 @@ A full-stack user search application built with:
 
 ---
 
-## 🛠️ Technologies
+## Technologies
 
 ### Backend
 - .NET 8
@@ -53,7 +53,7 @@ A full-stack user search application built with:
 
 ---
 
-## 🧠 Architecture
+## Architecture
 
 Angular Frontend  
 → UserService 
@@ -63,7 +63,7 @@ Angular Frontend
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 UserSearchSolution/
@@ -89,7 +89,7 @@ UserSearchSolution/
 ```
 ---
 
-## 🚀 Backend Setup
+## Backend Setup
 
 cd UserSearch.Api  
 dotnet run  
@@ -102,7 +102,7 @@ http://localhost:5093/swagger
 
 ---
 
-## 🌐 Frontend Setup
+## Frontend Setup
 
 cd user-search-client  
 npm install  
@@ -113,7 +113,7 @@ http://localhost:4200
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Get suggestions
 GET /api/users/get-suggestions?searchTerm=alex  
@@ -136,7 +136,7 @@ Request:
 ```
 ---
 
-## 🔁 Database Reset and Build
+## Database Reset and Build
 
 Location:
 UserSearch.Api/Build/reset-and-build-db.ps1  
@@ -152,13 +152,13 @@ What it does:
 - Recreates schema
 
 ---
-## 🌱 Seed Database
+## Seed Database
 
 This endpoint allows you to populate the database using an Excel (.xlsx) file.  
 It is intended for **local development and testing only**.
 
 
-### 📌 Endpoint
+### Endpoint
 
 **POST**
 
@@ -166,13 +166,13 @@ It is intended for **local development and testing only**.
 
 
 
-### 📂 Request Format
+### Request Format
 
 - Content-Type: `multipart/form-data`
 - Field name: `file`
 
 
-### 📥 Example Request
+### Example Request
 
 ```http
 POST http://localhost:5093/api/UserImport/seed
@@ -194,7 +194,7 @@ The Excel file must contain the following columns:
 
 ---
 
-## 🚀 Running the Full Stack
+## Running the Full Stack
 
 ### Backend
 cd UserSearch.Api  
@@ -210,7 +210,7 @@ http://localhost:4200
 
 ---
 
-## 🧠 Notes
+## Notes
 
 - Frontend: http://localhost:4200  
 - Backend:  http://localhost:5093
@@ -219,7 +219,7 @@ http://localhost:4200
 
 ---
 
-## 📌 Future Improvements
+## Future Improvements
 - Caching
 - JWT authentication
 - Docker support
