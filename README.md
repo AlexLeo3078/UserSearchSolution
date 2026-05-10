@@ -175,7 +175,7 @@ It is intended for **local development and testing only**.
 ### Example Request
 
 ```http
-POST http://localhost:5093/api/UserImport/seed
+POST http://localhost:5093/api/user-import/seed
 Content-Type: multipart/form-data
 
 Body:
