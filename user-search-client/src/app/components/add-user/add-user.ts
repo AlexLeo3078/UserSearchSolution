@@ -4,6 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ToastService } from '../../services/toast.service';
+import { TOAST_TYPE } from '../../interfaces/toast';
 
 @Component({
   selector: 'app-add-user',
@@ -74,22 +75,16 @@ export class AddUserComponent {
       .subscribe({
         next: (res) => {
           if (res != null) {
-            this.toast.show('User created successfully ✔', 'success');
+            this.toast.show('User created successfully ✔', TOAST_TYPE.Success);
             this.success = true;
             this.userForm.reset();
             this.isFormVisible = false;
           } else {
-            this.toast.show(
-              'Failed to create user',
-              'error'
-            );
+            this.toast.show('Failed to create user', TOAST_TYPE.Error);
           }
         },
         error: (err) => {
-          this.toast.show(
-            err?.error || 'Failed to create user',
-            'error'
-          );
+          this.toast.show(err?.error || 'Failed to create user', TOAST_TYPE.Error);
         }
       });
   }

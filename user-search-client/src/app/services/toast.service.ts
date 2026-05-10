@@ -1,31 +1,28 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-export interface Toast {
-  message: string;
-  type: 'success' | 'error';
-}
+import { Toast, ToastType } from '../interfaces/toast';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
   private toastsSubject = new BehaviorSubject<Toast[]>([]);
   toasts$ = this.toastsSubject.asObservable();
 
-  show(message: string, type: 'success' | 'error') {
-    const current = this.toastsSubject.value;
-
+  show(message: string, type: ToastType) {
     const newToast: Toast = { message, type };
-
-    this.toastsSubject.next([...current, newToast]);
+    this.addToast(newToast);
 
     setTimeout(() => {
       this.remove(newToast);
     }, 3000);
   }
 
+  private addToast(toast: Toast) {
+    this.toastsSubject.next([...this.toastsSubject.value, toast]);
+  }
+
   remove(toast: Toast) {
     this.toastsSubject.next(
-      this.toastsSubject.value.filter(t => t !== toast)
+      this.toastsSubject.value.filter(item => item !== toast)
     );
   }
 }
