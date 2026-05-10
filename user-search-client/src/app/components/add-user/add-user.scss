@@ -1,90 +1,78 @@
-.create-user{
-  background: #db1313;
-  border: 1px solid red;
-  border-radius: 25px;
-  color: white;
-  cursor: pointer;
-  margin: 1rem auto;
-  display: flex;
-  font-size: 10px;
-  padding: 10px 18px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-  width: fit-content;
-  -webkit-tap-highlight-color: transparent;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/variables' as *;
+
+/* -----------------------------
+   CREATE USER BUTTON
+----------------------------- */
+
+.create-user {
+  @include button-base;
+  margin: $space-xl auto;
 }
 
+/* -----------------------------
+   ACTIONS
+----------------------------- */
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: $space-sm;
+  margin: $space-sm auto;
+
+  button {
+    @include button-base;
+  }
+}
+
+/* -----------------------------
+   FORM LAYOUT
+----------------------------- */
+
 .form-wrapper {
-  margin-top: 12px;
-  max-width: 800px;
+  margin-top: $space-sm;
+  max-width: 50rem;
   width: 90vw;
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
+  @include flex-column($space-sm);
   width: 100%;
-  gap: 12px;
 }
 
 .form-card {
-  background: white;
-  padding: 20px;
-  margin-top: 20px;
-  background: white;
-  border: 1px solid red;
-  border-radius: 25px;
+  @include card;
+  margin-top: $space-lg;
 }
 
 .row {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  @include flex-column($space-sm);
 }
 
 .field {
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin: 0 16px;
+  margin: 0 $space-xl;
 }
 
-.error {
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
-}
+/* -----------------------------
+   INPUT + ERROR
+----------------------------- */
 
 input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 25px;
-}
-
-.actions {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin: 10px auto;
-}
-
-.actions button {
-  background: #db1313;
-  border: 1px solid red;
-  border-radius: 25px;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  font-size: 10px;
-  padding: 10px 18px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-  width: fit-content;
-  -webkit-tap-highlight-color: transparent;
+  @include input-base;
 }
 
 .error {
-  color: red;
-  font-size: 12px;
+  color: $color-primary;
+  font-size: $font-sm;
+  margin-top: $space-xs;
 }
+
+/* -----------------------------
+   RESPONSIVE
+----------------------------- */
 
 @media (min-width: 501px) {
   .row {

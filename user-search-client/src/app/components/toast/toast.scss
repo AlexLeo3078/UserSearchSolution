@@ -1,36 +1,36 @@
+@use '../../../styles/mixins' as *;
+@use '../../../styles/variables' as *;
+
+/* -----------------------------
+   ANIMATIONS
+----------------------------- */
+
+@include slide-in-animation;
+
+/* -----------------------------
+   TOAST CONTAINER
+----------------------------- */
+
 .toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 9999;
+  @include toast-container;
 }
+
+/* -----------------------------
+   TOAST BASE
+----------------------------- */
 
 .toast {
-  padding: 12px 16px;
-  border-radius: 8px;
-  color: white;
-  min-width: 200px;
-  animation: slideIn 0.2s ease;
+  @include toast-base;
 }
 
-.success {
-  background: #2e7d32;
+/* -----------------------------
+   TOAST STATES
+----------------------------- */
+
+.toast--success {
+  @include toast-success;
 }
 
-.error {
-  background: #c62828;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.toast--error {
+  @include toast-error;
 }

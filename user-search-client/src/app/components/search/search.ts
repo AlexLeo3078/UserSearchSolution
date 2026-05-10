@@ -81,15 +81,8 @@ export class SearchComponent implements OnInit {
 
     this.userService.getUserById(this.currentSelectedUser.id)
       .subscribe(result => {
-        // prevent duplicates
-        const exists = this.listOfSelectedUsers.some(
-          user => user.email === result.email
-        );
-
-        if (!exists) {
-          this.listOfSelectedUsers.push(result);
-          this.userSelectionService.setSelectedUsers(this.listOfSelectedUsers);
-        }
+        this.listOfSelectedUsers.push(result);
+        this.userSelectionService.setSelectedUsers(this.listOfSelectedUsers);
 
         // clean up state
         this.currentSelectedUser = null;

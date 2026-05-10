@@ -2,7 +2,7 @@
       <div
         *ngFor="let toast of toastService.toasts$ | async"
         class="toast"
-        [ngClass]="toast.type"
+        [ngClass]="'toast--' + toast.type"
       >
         {{ toast.message }}
       </div>

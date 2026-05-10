@@ -1,89 +1,80 @@
+@use '../../../styles/mixins' as *;
+@use '../../../styles/variables' as *;
+
+/* -----------------------------
+   CARD CONTENT
+----------------------------- */
+
 .card-content {
   text-align: left;
 }
 
+/* -----------------------------
+   SEARCH
+----------------------------- */
+
 .search-wrapper {
-  max-width: 800px;
+  max-width: 50rem;
   width: 90vw;
 }
 
 .search-bar {
   display: flex;
   width: 100%;
+
+  button {
+    @include search-button;
+  }
+
+  input {
+    @include search-input;
+  }
 }
 
-.search-bar button {
-  background: #db1313;
-  border: 1px solid red;
-  border-radius: 0 25px 25px 0;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 12px 20px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.search-bar button:active {
-  transform: scale(0.97);
-}
-
-.search-bar input {
-  background: white;
-  border: 1px solid red;
-  border-radius: 25px 0 0 25px;
-  border-right: none;
-  flex: 1;
-  font-size: 16px;
-  padding: 12px;
-}
-
-.search-bar input:focus {
-  outline: none;
-}
+/* -----------------------------
+   SUGGESTIONS
+----------------------------- */
 
 .suggestions {
-  background: white;
-  border: 1px solid red;
-  border-radius: 25px;
+  background: $color-white;
+  border: 0.0625rem solid $color-border;
+  border-radius: $radius-lg;
   list-style: none;
-  margin: 10px 0 0 0;
+  margin: $space-sm 0 0 0;
   padding: 0;
+
+  li {
+    cursor: pointer;
+    padding: $space-sm;
+    transition: background 0.2s ease;
+
+    span .highlight {
+      background-color: $color-highlight;
+      color: $color-text-dark;
+      margin: 0;
+      padding: 0;
+    }
+  }
 }
 
-.suggestions li {
-  cursor: pointer;
-  padding: 10px;
-  transition: background 0.2s ease;
-}
-
-.suggestions li span .highlight {
-  background-color: yellow;
-  color: black;
-  margin: 0;
-  padding: 0;
-}
+/* -----------------------------
+   USER GRID
+----------------------------- */
 
 .user-grid {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  margin-top: 15px;
-  max-height: 300px;
+  @include grid-responsive(150px, $space-sm);
+  margin-top: $space-lg;
+  max-height: 18.75rem;
   overflow-y: auto;
 }
 
 .user-card {
-  background: #2a2a2a;
-  border: 1px solid white;
-  border-radius: 25px;
-  color: white;
-  font-size: 14px;
-  padding: 10px;
-  margin: 10px;
-  display: flex;
-  justify-content: center; 
+  @include card-dark;
 }
+
+/* -----------------------------
+   RESPONSIVE
+----------------------------- */
 
 @media (min-width: 501px) {
   .user-grid {

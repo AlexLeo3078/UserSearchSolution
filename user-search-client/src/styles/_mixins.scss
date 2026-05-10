@@ -1,0 +1,145 @@
+@use './variables' as *;
+
+/* -----------------------------
+   BASE COMPONENT MIXINS
+----------------------------- */
+
+@mixin button-base {
+  background: $color-primary;
+  border: 0.0625rem solid $color-border;
+  border-radius: $radius-lg;
+  color: $color-white;
+  cursor: pointer;
+  display: flex;
+  font-size: $font-xs;
+  padding: $space-sm $space-md;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  width: fit-content;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@mixin card {
+  background: $color-white;
+  border: 0.0625rem solid $color-border;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+}
+
+@mixin card-dark {
+  background: $color-text-dark;
+  border: 0.0625rem solid $color-white;
+  border-radius: $radius-lg;
+  color: $color-white;
+  display: flex;
+  font-size: $font-sm;
+  justify-content: center;
+  margin: $space-sm;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  padding: $space-sm;
+  word-break: break-word;
+}
+
+@mixin input-base {
+  border: 0.0625rem solid $color-input-border;
+  border-radius: $radius-lg;
+  padding: $space-sm;
+}
+
+/* -----------------------------
+   LAYOUT MIXINS
+----------------------------- */
+
+@mixin flex-column($gap: $space-sm) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin grid-responsive($min: 150px, $gap: $space-sm) {
+  display: grid;
+  gap: $gap;
+  grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
+}
+
+/* -----------------------------
+   SEARCH COMPONENT
+----------------------------- */
+
+@mixin search-button {
+  background: $color-primary;
+  border: 0.0625rem solid $color-border;
+  border-radius: 0 1.5625rem 1.5625rem 0;
+  color: $color-white;
+  cursor: pointer;
+  font-size: $font-sm;
+  padding: $space-md $space-lg;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+@mixin search-input {
+  background: $color-white;
+  border: 0.0625rem solid $color-border;
+  border-right: none;
+  border-radius: 1.5625rem 0 0 1.5625rem;
+  flex: 1;
+  font-size: $font-sm;
+  padding: $space-md;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* -----------------------------
+   TOAST SYSTEM
+----------------------------- */
+
+@mixin toast-container {
+  position: fixed;
+  top: $space-lg;
+  right: $space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  z-index: 9999;
+}
+
+@mixin toast-base {
+  animation: slideIn 0.2s ease;
+  border-radius: $radius-sm;
+  color: $color-white;
+  min-width: 12.5rem;
+  padding: $space-md $space-lg;
+}
+
+/* STATES */
+@mixin toast-success {
+  background: $color-success;
+}
+
+@mixin toast-error {
+  background: $color-error;
+}
+
+/* -----------------------------
+   ANIMATIONS
+----------------------------- */
+
+@mixin slide-in-animation {
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
