@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserSearch.Api.Data;
 using UserSearch.Api.Dto;
@@ -59,6 +61,7 @@ namespace UserSearch.Api.Controllers
 
             Response result = new Response
             {
+                Id= id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 JobTitle = user.JobTitle ?? string.Empty,
@@ -87,19 +90,26 @@ namespace UserSearch.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            Response result = new Response
+            try
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                JobTitle = user.JobTitle ?? string.Empty,
-                Email = user.Email,
-                Phone = user.Phone
-            };
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
 
-            return Ok(result);
+                Response result = new Response
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    JobTitle = user.JobTitle ?? string.Empty,
+                    Email = user.Email,
+                    Phone = user.Phone
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Something went wrong : {ex.Message}");
+            }
         }
     }
 }
