@@ -10,8 +10,6 @@ A full-stack user search application built with:
 
 ## 📌 Index
 
-## 📌 Index
-
 - [Features](#features)
 - [Technologies](#technologies)
 - [Architecture](#architecture)
