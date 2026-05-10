@@ -8,6 +8,15 @@ export class ToastService {
   toasts$ = this.toastsSubject.asObservable();
 
   show(message: string, type: ToastType) {
+
+    const exists = this.toastsSubject.value.some(
+      toast => toast.message === message && toast.type === type
+    );
+
+    if (exists) {
+      return;
+    }
+
     const newToast: Toast = { message, type };
     this.addToast(newToast);
 
