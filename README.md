@@ -1,29 +1,29 @@
-# UserSearchSolution
+# User Search Solution
 
 A full-stack user search application built with:
 
 - ASP.NET Core Web API (.NET 8)
 - Entity Framework Core + SQL Server
 - Angular frontend (user-search-client)
-- Mock + Real API switching support
 
 ---
 
 ## 📌 Index
 
-- Features
-- Technologies
-- Architecture
-- Project Structure
-- Backend Setup
-- Frontend Setup
-- Mock vs Real API (Important)
-- API Endpoints
-- Database Reset (Full Dev Reset)
-- Seed Database
-- Running the Full Stack
-- Notes
-- Future Improvements
+## 📌 Index
+
+- [Features](#features)
+- [Technologies](#technologies)
+- [Architecture](#architecture)
+- [Project Structure](#project-structure)
+- [Backend Setup](#backend-setup)
+- [Frontend Setup](#frontend-setup)
+- [API Endpoints](#api-endpoints)
+- [Database Reset (Full Dev Reset)](##database-reset-and-build-full-dev-reset-and-build)
+- [Seed Database](#seed-database-excel-import)
+- [Running the Full Stack](#running-full-stack)
+- [Notes](#notes)
+- [Future Improvements](#future-improvements)
 
 ---
 
@@ -35,8 +35,6 @@ A full-stack user search application built with:
 - Email uniqueness validation
 - SQL Server database with Entity Framework Core
 - Angular frontend with live search UI
-- Mock mode (JSON / in-memory data)
-- Real API mode (ASP.NET Core backend)
 - Full database reset and build script for development
 
 ---
@@ -60,7 +58,7 @@ A full-stack user search application built with:
 ## 🧠 Architecture
 
 Angular Frontend  
-→ UserService (Mock or API switch)  
+→ UserService 
 → ASP.NET Core Web API  
 → Entity Framework Core  
 → SQL Server Database  
@@ -86,6 +84,7 @@ UserSearchSolution/
 ├── user-search-client/
 │   ├── src/
 │   │   ├── app/
+│   │   ├── styles/
 │   │   └── environments/
 │
 └── README.md
@@ -100,7 +99,8 @@ dotnet run
 Backend runs at:
 http://localhost:5093
 
-Swagger UI: http://localhost:5093/swagger
+Swagger UI: 
+http://localhost:5093/swagger
 
 ---
 
@@ -112,105 +112,6 @@ ng serve
 
 Frontend runs at:
 http://localhost:4200  
-
----
-
-## ⚙️ Mock vs Real API (IMPORTANT)
-
-This project supports **two ways of getting data**:
-
----
-
-### 🟡 Mock Mode (Frontend-only)
-
-Mock mode uses **local or in-memory data inside the Angular app**.
-
-✔ No backend required  
-✔ Fast development  
-✔ Useful for UI work  
-✔ No network calls  
-
-Example:
-
-useMockApi: true  
-
-Data is:
-- hardcoded in service OR
-- loaded from JSON file in assets/
-
----
-
-### 🔵 Real API Mode (Backend + Database)
-
-Real API mode connects Angular to the ASP.NET Core backend.
-
-✔ Uses SQL Server database  
-✔ Full end-to-end flow  
-✔ Simulates production behaviour  
-✔ Uses HTTP calls  
-
-Example:
-
-useMockApi: false  
-
-Example API call:
-http://localhost:5093/api/users/get-suggestions?searchTerm=alex  
-
----
-
-## 🔄 How to Switch Between Modes
-
-You control the mode in:
-
-src/environments/environment.ts  
-
-### Mock mode
-useMockApi: true  
-
-### API mode
-useMockApi: false  
-
-👉 No code changes needed in components  
-👉 Only environment flag changes behaviour  
-
----
-
-## 🚀 How to Run Both Modes
-
-### 🟡 Run Mock Mode (Frontend only)
-
-1. Open Angular project
-2. Ensure:
-
-useMockApi: true  
-
-3. Run:
-
-cd user-search-client  
-ng serve  
-
-✔ App works without backend
-
----
-
-### 🔵 Run Real API Mode (Full Stack)
-
-1. Start backend:
-
-cd UserSearch.Api  
-dotnet run  
-
-2. Start frontend:
-
-cd user-search-client  
-ng serve  
-
-3. Set:
-
-useMockApi: false  
-
-✔ Angular calls .NET API  
-✔ Data comes from SQL Server  
 
 ---
 
@@ -258,7 +159,6 @@ What it does:
 This endpoint allows you to populate the database using an Excel (.xlsx) file.  
 It is intended for **local development and testing only**.
 
----
 
 ### 📌 Endpoint
 
@@ -267,14 +167,12 @@ It is intended for **local development and testing only**.
 /api/UserImport/seed
 
 
----
 
 ### 📂 Request Format
 
 - Content-Type: `multipart/form-data`
 - Field name: `file`
 
----
 
 ### 📥 Example Request
 
@@ -293,12 +191,12 @@ The Excel file must contain the following columns:
 
 | FirstName | LastName | JobTitle                              | Phone         | Email                                 |
 | --------- | -------- | ------------------------------------- | ------------- | ------------------------------------- |
-| Alex      | Leo      | Software Developer                    | +447700900123 | [alex@test.com](mailto:alex@test.com) |
-| John      | Smith    | Developer                             | +447700900456 | [john@test.com](mailto:john@test.com) |
+| Alex      | Leo      | Senior Software Engineer              | +447700900123 | [alex@test.com](mailto:alex@test.com) |
+| John      | Smith    | Software Engineer                     | +447700900456 | [john@test.com](mailto:john@test.com) |
 
 ---
 
-## 🚀 Running Full Stack (Summary)
+## 🚀 Running Full Stack
 
 ### Backend
 cd UserSearch.Api  
@@ -317,10 +215,9 @@ http://localhost:4200
 ## 🧠 Notes
 
 - Frontend: http://localhost:4200  
-- Backend: http://localhost:5093  
-- Ensure CORS is enabled in API  
-- Mock mode works without backend  
-- API mode requires backend running  
+- Backend:  http://localhost:5093
+- Swagger:  http://localhost:5093/swagger
+- Ensure CORS is enabled in API
 
 ---
 
