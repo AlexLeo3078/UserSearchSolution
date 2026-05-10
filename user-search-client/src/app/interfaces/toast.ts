@@ -1,5 +1,6 @@
 export const TOAST_TYPE = {
   Success: 'success',
+  Info: 'info',
   Error: 'error'
 } as const;
 

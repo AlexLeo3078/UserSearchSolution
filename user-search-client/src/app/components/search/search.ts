@@ -4,6 +4,8 @@ import { UserService } from '../../services/user.service';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
 import { UserSelectionService } from '../../services/user-selection.service';
 import { User, UserSelection } from '../../interfaces/user';
+import { ToastService } from '../../services/toast.service';
+import { TOAST_TYPE } from '../../interfaces/toast';
 
 @Component({
   selector: 'app-search',
@@ -13,21 +15,22 @@ import { User, UserSelection } from '../../interfaces/user';
   styleUrl: './search.scss',
 })
 export class SearchComponent implements OnInit {
-
-  public usersSubject$ = new BehaviorSubject<UserSelection[]>([]);
   private searchSubject = new Subject<string>();
+
+  public usersSubject = new BehaviorSubject<UserSelection[]>([]);
   public currentSelectedUser: UserSelection | null = null;
   public listOfSelectedUsers: User[] = [];
   public searchTerm: string = '';
 
   constructor(
     private userService: UserService,
-    private userSelectionService: UserSelectionService) { }
+    private userSelectionService: UserSelectionService,
+    private toast: ToastService,) { }
 
   /**
    * Initializes the component by setting up a subscription to the searchSubject. 
    * It applies several RxJS operators to handle debouncing, filtering, and switching to the latest search term.
-   * When new data is received from the userService, it updates the usersSubject$ BehaviorSubject, which in turn updates the suggestions dropdown.
+   * When new data is received from the userService, it updates the usersSubject BehaviorSubject, which in turn updates the suggestions dropdown.
    */
   ngOnInit() {
     this.searchSubject.pipe(
@@ -35,10 +38,10 @@ export class SearchComponent implements OnInit {
       filter(query => query.length >= 2),
       switchMap(value => this.userService.getSuggestions(value))
     ).subscribe(data => {
-      this.usersSubject$.next(data);
+      this.usersSubject.next(data);
     });
 
-    // populate 
+    // Populate from storage
     this.listOfSelectedUsers = [...this.userSelectionService.getSelectedUsers()];
   }
 
@@ -49,7 +52,7 @@ export class SearchComponent implements OnInit {
    */
   onSearch(value: string) {
     if (value.length < 2) {
-      this.usersSubject$.next([]);
+      this.usersSubject.next([]);
       return;
     }
 
@@ -69,7 +72,7 @@ export class SearchComponent implements OnInit {
     this.searchTerm = `${user.firstName} ${user.lastName}`;
 
     // hide dropdown
-    this.usersSubject$.next([]);
+    this.usersSubject.next([]);
   }
 
   /**
@@ -79,15 +82,23 @@ export class SearchComponent implements OnInit {
   onSearchClick() {
     if (!this.currentSelectedUser) return;
 
+    // Prevent unnecessary call to DB and duplicates on FE
+    const exists = this.listOfSelectedUsers.some(
+      user => user.id === this.currentSelectedUser?.id
+    )
+
+    if (exists) {
+      this.toast.show('User already displayed!', TOAST_TYPE.Info)
+      this.cleanUpState();
+      return;
+    }
+
     this.userService.getUserById(this.currentSelectedUser.id)
       .subscribe(result => {
         this.listOfSelectedUsers.push(result);
         this.userSelectionService.setSelectedUsers(this.listOfSelectedUsers);
 
-        // clean up state
-        this.currentSelectedUser = null;
-        this.searchTerm = '';
-        this.usersSubject$.next([]);
+        this.cleanUpState();
       });
   }
 
@@ -128,5 +139,15 @@ export class SearchComponent implements OnInit {
       { text: match, match: true },
       { text: afterMatch, match: false }
     ];
+  }
+
+
+  /**
+   * Clean up state
+   */
+  private cleanUpState() {
+    this.currentSelectedUser = null;
+    this.searchTerm = '';
+    this.usersSubject.next([]);
   }
 }

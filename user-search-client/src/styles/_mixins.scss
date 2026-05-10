@@ -123,6 +123,10 @@
   background: $color-success;
 }
 
+@mixin toast-info {
+  background: $color-info;
+}
+
 @mixin toast-error {
   background: $color-error;
 }

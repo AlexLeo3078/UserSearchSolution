@@ -31,6 +31,10 @@
   @include toast-success;
 }
 
+.toast--info {
+  @include toast-info;
+}
+
 .toast--error {
   @include toast-error;
 }

@@ -13,7 +13,7 @@ export class ToastService {
 
     setTimeout(() => {
       this.remove(newToast);
-    }, 3000);
+    }, 5000);
   }
 
   private addToast(toast: Toast) {
