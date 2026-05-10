@@ -43,7 +43,7 @@ export class AddUserComponent {
       ]],
       phone: ['', [
         Validators.required,
-        Validators.pattern(/^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/)
+        Validators.pattern(/^[0-9+\-\s()]{7,}$/)
       ]]
     });
   }
