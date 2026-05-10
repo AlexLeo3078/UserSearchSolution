@@ -17,9 +17,9 @@ A full-stack user search application built with:
 - [Backend Setup](#backend-setup)
 - [Frontend Setup](#frontend-setup)
 - [API Endpoints](#api-endpoints)
-- [Database Reset (Full Dev Reset)](##database-reset-and-build-full-dev-reset-and-build)
-- [Seed Database](#seed-database-excel-import)
-- [Running the Full Stack](#running-full-stack)
+- [Database Reset and Build](#database-reset-and-build)
+- [Seed Database](#seed-database)
+- [Running the Full Stack](#running-the-full-stack)
 - [Notes](#notes)
 - [Future Improvements](#future-improvements)
 
@@ -136,7 +136,7 @@ Request:
 ```
 ---
 
-## 🔁 Database Reset and Build (Full Dev Reset and Build)
+## 🔁 Database Reset and Build
 
 Location:
 UserSearch.Api/Build/reset-and-build-db.ps1  
@@ -152,7 +152,7 @@ What it does:
 - Recreates schema
 
 ---
-## 🌱 Seed Database (Excel Import)
+## 🌱 Seed Database
 
 This endpoint allows you to populate the database using an Excel (.xlsx) file.  
 It is intended for **local development and testing only**.
@@ -194,7 +194,7 @@ The Excel file must contain the following columns:
 
 ---
 
-## 🚀 Running Full Stack
+## 🚀 Running the Full Stack
 
 ### Backend
 cd UserSearch.Api  
